@@ -1,0 +1,11 @@
+use project_test_db;
+create table role (id bigint not null auto_increment, name varchar(255) not null, primary key (id)) engine=InnoDB;
+create table user (id bigint not null auto_increment, email varchar(100) not null, first_name varchar(50), last_name varchar(50), password varchar(200) not null, username varchar(30) not null, primary key (id)) engine=InnoDB;
+create table user_role (user_id bigint not null, role_id bigint not null, primary key (user_id, role_id)) engine=InnoDB;
+create table user_audit (id bigint not null auto_increment, modified_by varchar(255), modified_date datetime, operation varchar(255), user_id bigint, primary key (id)) engine=InnoDB;
+alter table role add constraint unique (name);
+alter table user add constraint unique (email);
+alter table user add constraint unique (username);
+alter table user_role add constraint foreign key (role_id) references role (id);
+alter table user_role add constraint foreign key (user_id) references user (id);
+alter table user_audit add constraint foreign key (user_id) references user (id);
